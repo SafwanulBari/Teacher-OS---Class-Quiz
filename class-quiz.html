@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=3840" />
+<title>ক্লাস কুইজ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 3840px;
+    height: 2160px;
+    overflow: hidden;
+    font-family: 'Noto Sans Bengali', sans-serif;
+  }
+
+  .screen {
+    position: relative;
+    width: 3840px;
+    height: 2160px;
+    background-color: #130244;
+    overflow: hidden;
+  }
+
+  /* ── Star Field ── */
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+
+  /* ── Header bar ── */
+  .header {
+    position: absolute;
+    top: 64px;
+    left: 64px;
+    right: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+  }
+
+  /* Close button pill */
+  .close-btn {
+    background: #f4f4f6;
+    border: 2px solid #c3c6cc;
+    border-bottom-width: 6px;
+    border-radius: 1000px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .close-btn-inner {
+    background: #f4f4f6;
+    backdrop-filter: blur(50px);
+    border-radius: 1000px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-icon {
+    width: 72px;
+    height: 72px;
+    position: relative;
+  }
+
+  .close-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Title */
+  .title {
+    font-size: 111px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.48;
+    white-space: nowrap;
+  }
+
+  /* Header right meta */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .meta-text {
+    font-size: 56px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.48;
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Question number pill ── */
+  .q-pill {
+    position: absolute;
+    top: 292px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    padding: 32px 64px;
+    border-radius: 111px;
+    background: #130245;
+    box-shadow: inset 1px 1px 32px 0px rgba(255,255,255,0.25);
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .q-number {
+    font-size: 80px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.48;
+  }
+
+  .q-number span.muted {
+    color: #8c929c;
+  }
+
+  .progress-track {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-seg {
+    width: 240px;
+    height: 32px;
+    border-radius: 1111px;
+  }
+
+  .progress-seg.done {
+    background: #1ca63e;
+  }
+
+  .progress-seg.current {
+    background: linear-gradient(to right, #e8c8c8, #ffe8e8, #ffffff);
+  }
+
+  .progress-seg.empty {
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ── Question card ── */
+  .question-card {
+    position: absolute;
+    top: 365px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3400px;
+    background: #221066;
+    border-radius: 140px;
+    padding: 200px 120px 120px 120px;
+    min-height: 1415px;
+  }
+
+  .question-text {
+    font-size: 200px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.4;
+    width: 100%;
+  }
+
+  /* ── Show Options button ── */
+  .show-options-btn {
+    position: absolute;
+    bottom: 180px;
+    right: 220px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 48px 64px;
+    background: #e2008d;
+    border: 5.887px solid #ac005b;
+    border-bottom-width: 17.662px;
+    border-radius: 64px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .show-options-btn:active {
+    transform: translateY(4px);
+    border-bottom-width: 8px;
+  }
+
+  .show-options-icon {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+  }
+
+  .show-options-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .show-options-text {
+    font-size: 72px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.48;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+
+  <!-- ══ Star Field ══ -->
+  <div class="star" style="left:158.97px;top:2513.45px;width:3.711px;height:3.711px;opacity:0.13;"></div>
+  <div class="star" style="left:1885.23px;top:385.86px;width:8.701px;height:8.701px;opacity:0.69;"></div>
+  <div class="star" style="left:2860.49px;top:2183.88px;width:8.206px;height:8.206px;opacity:0.65;"></div>
+  <div class="star" style="left:641.2px;top:89.4px;width:3.835px;height:3.835px;opacity:0.17;"></div>
+  <div class="star" style="left:3750.48px;top:2242.64px;width:4.165px;height:4.165px;opacity:0.33;"></div>
+  <div class="star" style="left:3627.38px;top:1097.03px;width:2.804px;height:2.804px;opacity:0.21;"></div>
+  <div class="star" style="left:3263.26px;top:370.72px;width:7.711px;height:7.711px;opacity:0.26;"></div>
+  <div class="star" style="left:1801.9px;top:2218.02px;width:3.052px;height:3.052px;opacity:0.26;"></div>
+  <div class="star" style="left:3676.04px;top:149.94px;width:8.742px;height:8.742px;opacity:0.25;"></div>
+  <div class="star" style="left:816.13px;top:2410.19px;width:8.206px;height:8.206px;opacity:0.59;"></div>
+  <div class="star" style="left:200.78px;top:79.42px;width:8.784px;height:8.784px;opacity:0.27;"></div>
+  <div class="star" style="left:3780.91px;top:2494.23px;width:3.711px;height:3.711px;opacity:0.50;"></div>
+  <div class="star" style="left:185.32px;top:2232.87px;width:2.722px;height:2.722px;opacity:0.64;"></div>
+  <div class="star" style="left:450px;top:600px;width:5px;height:5px;opacity:0.3;"></div>
+  <div class="star" style="left:1200px;top:1800px;width:4px;height:4px;opacity:0.45;"></div>
+  <div class="star" style="left:2400px;top:700px;width:6px;height:6px;opacity:0.35;"></div>
+  <div class="star" style="left:3100px;top:1400px;width:3.5px;height:3.5px;opacity:0.28;"></div>
+  <div class="star" style="left:700px;top:1600px;width:7px;height:7px;opacity:0.22;"></div>
+  <div class="star" style="left:2200px;top:2000px;width:4.5px;height:4.5px;opacity:0.40;"></div>
+  <div class="star" style="left:3500px;top:300px;width:5.5px;height:5.5px;opacity:0.55;"></div>
+  <div class="star" style="left:1600px;top:100px;width:3px;height:3px;opacity:0.38;"></div>
+  <div class="star" style="left:2900px;top:1900px;width:6.5px;height:6.5px;opacity:0.20;"></div>
+  <div class="star" style="left:90px;top:1200px;width:4.2px;height:4.2px;opacity:0.60;"></div>
+  <div class="star" style="left:1050px;top:2100px;width:3.8px;height:3.8px;opacity:0.32;"></div>
+  <div class="star" style="left:3300px;top:800px;width:5.8px;height:5.8px;opacity:0.48;"></div>
+
+  <!-- ══ Header ══ -->
+  <div class="header">
+    <div class="header-left">
+      <!-- Close button -->
+      <div class="close-btn">
+        <div class="close-btn-inner">
+          <div class="close-icon">
+            <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="36" cy="36" r="36" fill="#f4f4f6"/>
+              <line x1="22" y1="22" x2="50" y2="50" stroke="#130244" stroke-width="6" stroke-linecap="round"/>
+              <line x1="50" y1="22" x2="22" y2="50" stroke="#130244" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="title">ক্লাস কুইজ</div>
+    </div>
+
+    <!-- Right meta -->
+    <div class="header-right">
+      <span class="meta-text">বিদ্যুতের উৎস</span>
+      <div class="dot"></div>
+      <span class="meta-text">৮টি</span>
+      <div class="dot"></div>
+      <span class="meta-text">কঠিন</span>
+    </div>
+  </div>
+
+  <!-- ══ Question Card ══ -->
+  <div class="question-card">
+    <p class="question-text">
+      যদি x &minus; 7 = 10 হয়, তবে &minus;7 কে সমান চিহ্নের ডানপাশে নিলে সেটি কী হবে?
+    </p>
+  </div>
+
+  <!-- ══ Question number pill (overlaps card top) ══ -->
+  <div class="q-pill">
+    <div class="q-number">
+      প্রশ্ন ২<span class="muted">/৫</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-seg done"></div>
+      <div class="progress-seg current"></div>
+      <div class="progress-seg empty"></div>
+      <div class="progress-seg empty"></div>
+      <div class="progress-seg empty"></div>
+    </div>
+  </div>
+
+  <!-- ══ Show Options Button ══ -->
+  <div class="show-options-btn">
+    <div class="show-options-icon">
+      <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="22" width="60" height="8" rx="4" fill="white"/>
+        <rect x="14" y="40" width="60" height="8" rx="4" fill="white"/>
+        <rect x="14" y="58" width="60" height="8" rx="4" fill="white"/>
+        <rect x="7" y="22" width="4" height="8" rx="2" fill="white"/>
+        <rect x="7" y="40" width="4" height="8" rx="2" fill="white"/>
+        <rect x="7" y="58" width="4" height="8" rx="2" fill="white"/>
+      </svg>
+    </div>
+    <span class="show-options-text">অপশনগুলো দেখুন</span>
+  </div>
+
+</div>
+</body>
+</html>
