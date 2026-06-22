@@ -191,11 +191,24 @@
     gap: 48px;
     padding: 4px 80px 4px 4px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
   }
 
-  .option-card:hover { background: #d8d8fc; transform: scale(1.01); }
-  .option-card:active { transform: scale(0.98); }
+  .option-card:hover:not(.selected) { background: #d8d8fc; transform: scale(1.01); }
+  .option-card:active:not(.selected) { transform: scale(0.98); }
+
+  .option-card.selected {
+    background: #1080d6;
+    border-color: transparent;
+    transform: scale(1.035);
+  }
+  .option-card.selected .option-badge {
+    background: #e5e5fd;
+    color: #111;
+  }
+  .option-card.selected .option-label {
+    color: white;
+  }
 
   .option-badge {
     width: 240px;
@@ -210,6 +223,7 @@
     font-weight: 600;
     color: white;
     line-height: 1.48;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   .option-label {
@@ -218,6 +232,7 @@
     color: #111;
     line-height: 1.48;
     white-space: nowrap;
+    transition: color 0.3s ease;
   }
 
   /* staggered fade-in per card */
@@ -276,7 +291,7 @@
   .btn-pair {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     opacity: 0;
     pointer-events: none;
@@ -446,18 +461,8 @@
       <span>অপশনগুলো দেখুন</span>
     </div>
 
-    <!-- State 2: Explain + Answer -->
+    <!-- State 2: Answer only -->
     <div class="btn-pair">
-      <div class="btn btn-explain">
-        <div class="btn-icon">
-          <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="16" y="16" width="56" height="16" rx="8" fill="#0a0c11"/>
-            <rect x="16" y="40" width="40" height="16" rx="8" fill="#0a0c11"/>
-            <rect x="16" y="64" width="48" height="16" rx="8" fill="#0a0c11"/>
-          </svg>
-        </div>
-        <span>ব্যাখ্যা দেখুন</span>
-      </div>
       <div class="btn btn-answer">
         <div class="btn-icon">
           <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -488,6 +493,16 @@
   /* Reveal options on CTA click */
   document.getElementById('btnShowOptions').addEventListener('click', function() {
     document.getElementById('screen').classList.add('options-revealed');
+  });
+
+  /* Option selection */
+  document.querySelectorAll('.option-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      document.querySelectorAll('.option-card').forEach(function(c) {
+        c.classList.remove('selected');
+      });
+      card.classList.add('selected');
+    });
   });
 </script>
 </body>
