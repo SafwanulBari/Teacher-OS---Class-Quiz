@@ -425,9 +425,44 @@
     pointer-events: auto;
     transform: translateY(0);
   }
-  .screen.answer-revealed .options-grid .option-card:not(.correct) {
+  .screen.answer-revealed .options-grid .option-card {
     cursor: default;
     pointer-events: none;
+  }
+
+  /* ── Wrong answer state ── */
+  .option-card.wrong {
+    background: #e92020;
+    border-color: transparent;
+    transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+  }
+  .option-card.wrong .option-badge { background: rgba(255,255,255,0.8); color: #111; }
+  .option-card.wrong .option-label { color: white; }
+
+  /* Correct card revealed after wrong answer (direct solid green, no fill bar) */
+  .option-card.correct-reveal {
+    background: #199738;
+    border-color: transparent;
+    transition: background 0.45s ease 0.3s, border-color 0.45s ease 0.3s;
+  }
+  .option-card.correct-reveal .option-badge { background: rgba(255,255,255,0.8); color: #111; }
+  .option-card.correct-reveal .option-label { color: white; }
+
+  /* Shake animation for wrong card */
+  @keyframes shake {
+    0%   { transform: translateX(0); }
+    10%  { transform: translateX(-60px); }
+    22%  { transform: translateX(60px); }
+    34%  { transform: translateX(-48px); }
+    46%  { transform: translateX(48px); }
+    58%  { transform: translateX(-28px); }
+    70%  { transform: translateX(28px); }
+    82%  { transform: translateX(-12px); }
+    91%  { transform: translateX(8px); }
+    100% { transform: translateX(0); }
+  }
+  .option-card.shake {
+    animation: shake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
   }
 </style>
 </head>
@@ -663,36 +698,74 @@
     requestAnimationFrame(draw);
   }
 
+  /* ── Error sound (wrong answer) ── */
+  function playErrorSound() {
+    var ctx2 = new (window.AudioContext || window.webkitAudioContext)();
+    [[330,0,0.22],[247,0.18,0.38]].forEach(function(triple) {
+      var osc = ctx2.createOscillator(), g = ctx2.createGain();
+      osc.connect(g); g.connect(ctx2.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.value = triple[0];
+      var t = ctx2.currentTime + triple[1];
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(triple[2], t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.start(t); osc.stop(t + 0.38);
+    });
+  }
+
   /* ── Reveal answer ── */
   function revealAnswer() {
     var screen = document.getElementById('screen');
     if (screen.classList.contains('answer-revealed')) return;
+
+    var selectedCard = document.querySelector('.option-card.selected');
+    if (!selectedCard) return;
+
     screen.classList.add('answer-revealed');
 
     var correctCard = document.querySelector('.option-card[data-correct="true"]');
-    correctCard.classList.remove('selected');
-    correctCard.classList.add('correct');
+    var isCorrect = selectedCard.dataset.correct === 'true';
 
-    /* Play success sound */
-    var ctx2 = new (window.AudioContext || window.webkitAudioContext)();
-    [[523,0],[659,0.12],[784,0.24],[1047,0.38]].forEach(function(pair) {
-      var osc = ctx2.createOscillator(), g = ctx2.createGain();
-      osc.connect(g); g.connect(ctx2.destination);
-      osc.type = 'sine';
-      osc.frequency.value = pair[0];
-      var t = ctx2.currentTime + pair[1];
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.22, t + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
-      osc.start(t); osc.stop(t + 0.3);
-    });
+    if (isCorrect) {
+      /* ── Correct path ── */
+      selectedCard.classList.add('correct');
 
-    /* After bar fills, show confetti */
-    setTimeout(function() {
-      correctCard.classList.add('confetti-active');
-      var canvas = correctCard.querySelector('.confetti-canvas');
-      launchConfetti(canvas);
-    }, 1500);
+      /* Success arpeggio: C5-E5-G5-C6 */
+      var ctx2 = new (window.AudioContext || window.webkitAudioContext)();
+      [[523,0],[659,0.12],[784,0.24],[1047,0.38]].forEach(function(pair) {
+        var osc = ctx2.createOscillator(), g = ctx2.createGain();
+        osc.connect(g); g.connect(ctx2.destination);
+        osc.type = 'sine';
+        osc.frequency.value = pair[0];
+        var t = ctx2.currentTime + pair[1];
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.22, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+        osc.start(t); osc.stop(t + 0.3);
+      });
+
+      /* After bar fills, confetti */
+      setTimeout(function() {
+        selectedCard.classList.add('confetti-active');
+        launchConfetti(selectedCard.querySelector('.confetti-canvas'));
+      }, 1500);
+
+    } else {
+      /* ── Wrong path ── */
+      selectedCard.classList.remove('selected');
+      selectedCard.classList.add('wrong');
+
+      /* Shake after red transition settles */
+      setTimeout(function() {
+        selectedCard.classList.add('shake');
+      }, 320);
+
+      /* Reveal correct card in solid green */
+      correctCard.classList.add('correct-reveal');
+
+      playErrorSound();
+    }
   }
 
   /* Option select sound */
