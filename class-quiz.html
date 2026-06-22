@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=3840" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ক্লাস কুইজ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,10 +11,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    width: 3840px;
-    height: 2160px;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
     font-family: 'Noto Sans Bengali', sans-serif;
+    background: #130244;
+  }
+
+  .scale-wrapper {
+    width: 3840px;
+    height: 2160px;
+    transform-origin: top left;
   }
 
   .screen {
@@ -25,14 +32,14 @@
     overflow: hidden;
   }
 
-  /* ── Star Field ── */
+  /* ── Stars ── */
   .star {
     position: absolute;
     background: white;
     border-radius: 50%;
   }
 
-  /* ── Header bar ── */
+  /* ── Header ── */
   .header {
     position: absolute;
     top: 64px;
@@ -43,13 +50,8 @@
     justify-content: space-between;
   }
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 64px;
-  }
+  .header-left { display: flex; align-items: center; gap: 64px; }
 
-  /* Close button pill */
   .close-btn {
     background: #f4f4f6;
     border: 2px solid #c3c6cc;
@@ -72,18 +74,9 @@
     justify-content: center;
   }
 
-  .close-icon {
-    width: 72px;
-    height: 72px;
-    position: relative;
-  }
+  .close-icon { width: 72px; height: 72px; }
+  .close-icon svg { width: 100%; height: 100%; }
 
-  .close-icon svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Title */
   .title {
     font-size: 111px;
     font-weight: 700;
@@ -92,12 +85,7 @@
     white-space: nowrap;
   }
 
-  /* Header right meta */
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-  }
+  .header-right { display: flex; align-items: center; gap: 26px; }
 
   .meta-text {
     font-size: 56px;
@@ -115,10 +103,10 @@
     flex-shrink: 0;
   }
 
-  /* ── Question number pill ── */
+  /* ── Progress pill ── */
   .q-pill {
     position: absolute;
-    top: 292px;
+    top: calc(50% - 780.5px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -138,102 +126,214 @@
     color: white;
     line-height: 1.48;
   }
+  .q-number span.muted { color: #8c929c; }
 
-  .q-number span.muted {
-    color: #8c929c;
-  }
+  .progress-track { display: flex; align-items: center; gap: 16px; }
 
-  .progress-track {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .progress-seg {
-    width: 240px;
-    height: 32px;
-    border-radius: 1111px;
-  }
-
-  .progress-seg.done {
-    background: #1ca63e;
-  }
-
-  .progress-seg.current {
-    background: linear-gradient(to right, #e8c8c8, #ffe8e8, #ffffff);
-  }
-
-  .progress-seg.empty {
-    background: rgba(255,255,255,0.2);
-  }
+  .progress-seg { width: 240px; height: 32px; border-radius: 1111px; }
+  .progress-seg.done { background: #1ca63e; }
+  .progress-seg.current { background: linear-gradient(to right, #e8c8c8, #ffe8e8, #ffffff); }
+  .progress-seg.empty { background: rgba(255,255,255,0.2); }
 
   /* ── Question card ── */
   .question-card {
     position: absolute;
-    top: 365px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     width: 3400px;
+    height: 1415px;
     background: #221066;
     border-radius: 140px;
     padding: 200px 120px 120px 120px;
-    min-height: 1415px;
+    overflow: hidden;
   }
 
+  /* ── Question text ── */
   .question-text {
     font-size: 200px;
     font-weight: 700;
     color: white;
     line-height: 1.4;
     width: 100%;
+    transition: font-size 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                line-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* ── Show Options button ── */
-  .show-options-btn {
+  /* ── Options grid (hidden initially) ── */
+  .options-grid {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+    pointer-events: none;
+  }
+
+  .options-row {
+    display: flex;
+    gap: 48px;
+    width: 100%;
+  }
+
+  .option-card {
+    flex: 1;
+    height: 280px;
+    background: #e5e5fd;
+    border: 4px solid rgba(223,190,76,0.4);
+    border-radius: 64px;
+    backdrop-filter: blur(50px);
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 4px 80px 4px 4px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .option-card:hover { background: #d8d8fc; transform: scale(1.01); }
+  .option-card:active { transform: scale(0.98); }
+
+  .option-badge {
+    width: 240px;
+    min-width: 240px;
+    height: 272px;
+    background: #423598;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.48;
+  }
+
+  .option-label {
+    font-size: 100px;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.48;
+    white-space: nowrap;
+  }
+
+  /* staggered fade-in per card */
+  .option-card:nth-child(1) { transition-delay: 0.25s; }
+  .option-card:nth-child(2) { transition-delay: 0.32s; }
+  .options-row:nth-child(2) .option-card:nth-child(1) { transition-delay: 0.39s; }
+  .options-row:nth-child(2) .option-card:nth-child(2) { transition-delay: 0.46s; }
+
+  /* ── Bottom CTA area ── */
+  .cta-area {
     position: absolute;
-    bottom: 180px;
-    right: 220px;
+    top: calc(50% + 796.5px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3400px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* shared button base */
+  .btn {
     display: flex;
     align-items: center;
     gap: 35px;
     padding: 48px 64px;
-    background: #e2008d;
-    border: 5.887px solid #ac005b;
-    border-bottom-width: 17.662px;
     border-radius: 64px;
     cursor: pointer;
     user-select: none;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1.48;
+    white-space: nowrap;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .show-options-btn:active {
-    transform: translateY(4px);
+  .btn-icon { width: 88px; height: 88px; flex-shrink: 0; }
+  .btn-icon svg { width: 100%; height: 100%; }
+
+  /* Show options button (state 1) */
+  .btn-show-options {
+    background: #e2008d;
+    border: 5.887px solid #ac005b;
+    border-bottom-width: 17.662px;
+    color: white;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .btn-show-options:active {
+    transform: translateY(6px);
     border-bottom-width: 8px;
   }
 
-  .show-options-icon {
-    width: 88px;
-    height: 88px;
-    flex-shrink: 0;
-  }
-
-  .show-options-icon svg {
+  /* Pair of buttons (state 2) */
+  .btn-pair {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.35s,
+                transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
-  .show-options-text {
-    font-size: 72px;
-    font-weight: 700;
+  .btn-explain {
+    background: white;
+    border: 5.887px solid #414651;
+    border-bottom-width: 17.662px;
+    color: #0a0c11;
+  }
+  .btn-explain:active { transform: translateY(6px); border-bottom-width: 8px; }
+
+  .btn-answer {
+    background: #e2008d;
+    border: 5.887px solid #ac005b;
+    border-bottom-width: 17.662px;
     color: white;
+  }
+  .btn-answer:active { transform: translateY(6px); border-bottom-width: 8px; }
+
+  /* ══ Revealed state ══ */
+  .screen.options-revealed .question-text {
+    font-size: 120px;
     line-height: 1.48;
-    white-space: nowrap;
+  }
+
+  .screen.options-revealed .options-grid {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .screen.options-revealed .btn-show-options {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+  }
+
+  .screen.options-revealed .btn-pair {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 </style>
 </head>
 <body>
-<div class="screen">
+<div class="scale-wrapper" id="scaleWrapper">
+<div class="screen" id="screen">
 
-  <!-- ══ Star Field ══ -->
+  <!-- Stars -->
   <div class="star" style="left:158.97px;top:2513.45px;width:3.711px;height:3.711px;opacity:0.13;"></div>
   <div class="star" style="left:1885.23px;top:385.86px;width:8.701px;height:8.701px;opacity:0.69;"></div>
   <div class="star" style="left:2860.49px;top:2183.88px;width:8.206px;height:8.206px;opacity:0.65;"></div>
@@ -260,10 +360,9 @@
   <div class="star" style="left:1050px;top:2100px;width:3.8px;height:3.8px;opacity:0.32;"></div>
   <div class="star" style="left:3300px;top:800px;width:5.8px;height:5.8px;opacity:0.48;"></div>
 
-  <!-- ══ Header ══ -->
+  <!-- Header -->
   <div class="header">
     <div class="header-left">
-      <!-- Close button -->
       <div class="close-btn">
         <div class="close-btn-inner">
           <div class="close-icon">
@@ -275,12 +374,8 @@
           </div>
         </div>
       </div>
-
-      <!-- Title -->
       <div class="title">ক্লাস কুইজ</div>
     </div>
-
-    <!-- Right meta -->
     <div class="header-right">
       <span class="meta-text">বিদ্যুতের উৎস</span>
       <div class="dot"></div>
@@ -290,18 +385,40 @@
     </div>
   </div>
 
-  <!-- ══ Question Card ══ -->
+  <!-- Question card -->
   <div class="question-card">
     <p class="question-text">
-      যদি x &minus; 7 = 10 হয়, তবে &minus;7 কে সমান চিহ্নের ডানপাশে নিলে সেটি কী হবে?
+      যদি x − 7 = 10 হয়, তবে −7 কে সমান চিহ্নের ডানপাশে নিলে সেটি কী হবে?
     </p>
+
+    <!-- Options (hidden until CTA clicked) -->
+    <div class="options-grid">
+      <div class="options-row">
+        <div class="option-card">
+          <div class="option-badge">ক</div>
+          <span class="option-label">+7</span>
+        </div>
+        <div class="option-card">
+          <div class="option-badge">খ</div>
+          <span class="option-label">+17</span>
+        </div>
+      </div>
+      <div class="options-row">
+        <div class="option-card">
+          <div class="option-badge">গ</div>
+          <span class="option-label">−17</span>
+        </div>
+        <div class="option-card">
+          <div class="option-badge">ঘ</div>
+          <span class="option-label">−7</span>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ══ Question number pill (overlaps card top) ══ -->
+  <!-- Progress pill -->
   <div class="q-pill">
-    <div class="q-number">
-      প্রশ্ন ২<span class="muted">/৫</span>
-    </div>
+    <div class="q-number">প্রশ্ন ২<span class="muted">/৫</span></div>
     <div class="progress-track">
       <div class="progress-seg done"></div>
       <div class="progress-seg current"></div>
@@ -311,21 +428,67 @@
     </div>
   </div>
 
-  <!-- ══ Show Options Button ══ -->
-  <div class="show-options-btn">
-    <div class="show-options-icon">
-      <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="14" y="22" width="60" height="8" rx="4" fill="white"/>
-        <rect x="14" y="40" width="60" height="8" rx="4" fill="white"/>
-        <rect x="14" y="58" width="60" height="8" rx="4" fill="white"/>
-        <rect x="7" y="22" width="4" height="8" rx="2" fill="white"/>
-        <rect x="7" y="40" width="4" height="8" rx="2" fill="white"/>
-        <rect x="7" y="58" width="4" height="8" rx="2" fill="white"/>
-      </svg>
+  <!-- Bottom CTA area -->
+  <div class="cta-area">
+
+    <!-- State 1: Show options -->
+    <div class="btn btn-show-options" id="btnShowOptions">
+      <div class="btn-icon">
+        <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="22" width="60" height="8" rx="4" fill="white"/>
+          <rect x="14" y="40" width="60" height="8" rx="4" fill="white"/>
+          <rect x="14" y="58" width="60" height="8" rx="4" fill="white"/>
+          <rect x="7" y="22" width="4" height="8" rx="2" fill="white"/>
+          <rect x="7" y="40" width="4" height="8" rx="2" fill="white"/>
+          <rect x="7" y="58" width="4" height="8" rx="2" fill="white"/>
+        </svg>
+      </div>
+      <span>অপশনগুলো দেখুন</span>
     </div>
-    <span class="show-options-text">অপশনগুলো দেখুন</span>
+
+    <!-- State 2: Explain + Answer -->
+    <div class="btn-pair">
+      <div class="btn btn-explain">
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="16" y="16" width="56" height="16" rx="8" fill="#0a0c11"/>
+            <rect x="16" y="40" width="40" height="16" rx="8" fill="#0a0c11"/>
+            <rect x="16" y="64" width="48" height="16" rx="8" fill="#0a0c11"/>
+          </svg>
+        </div>
+        <span>ব্যাখ্যা দেখুন</span>
+      </div>
+      <div class="btn btn-answer">
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="44" cy="40" rx="28" ry="20" stroke="white" stroke-width="6" fill="none"/>
+            <circle cx="44" cy="40" r="8" fill="white"/>
+            <line x1="16" y1="16" x2="72" y2="72" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0"/>
+          </svg>
+        </div>
+        <span>উত্তর দেখুন</span>
+      </div>
+    </div>
+
   </div>
 
 </div>
+</div>
+
+<script>
+  /* Scale to viewport */
+  function scaleToFit() {
+    var el = document.getElementById('scaleWrapper');
+    var scale = Math.min(window.innerWidth / 3840, window.innerHeight / 2160);
+    el.style.transform = 'scale(' + scale + ')';
+  }
+  scaleToFit();
+  window.addEventListener('resize', scaleToFit);
+
+  /* Reveal options on CTA click */
+  document.getElementById('btnShowOptions').addEventListener('click', function() {
+    document.getElementById('screen').classList.add('options-revealed');
+  });
+</script>
 </body>
 </html>
