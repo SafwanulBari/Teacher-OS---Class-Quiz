@@ -564,6 +564,178 @@
     pointer-events: none;
   }
 
+  /* ══ Result screen ══ */
+  .result-screen {
+    position: absolute;
+    inset: 0;
+    background: #130244;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 40;
+    transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1);
+  }
+  .screen.result-revealed .result-screen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .result-title {
+    position: absolute;
+    top: 194px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .result-congrats {
+    font-size: 148px;
+    font-weight: 700;
+    color: #fcbf04;
+    line-height: 1;
+  }
+  .result-subtitle {
+    font-size: 148px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Donut chart */
+  .result-donut-wrap {
+    position: absolute;
+    left: 351px;
+    top: 534px;
+    width: 1243px;
+    height: 1243px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .result-donut-svg {
+    position: absolute;
+    width: 880px;
+    height: 880px;
+  }
+  .donut-track {
+    fill: none;
+    stroke: rgba(255,255,255,0.12);
+    stroke-width: 80;
+  }
+  .donut-arc {
+    fill: none;
+    stroke: #e2008d;
+    stroke-width: 80;
+    stroke-linecap: round;
+    stroke-dasharray: 0 2388;
+    transition: stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1) 0.4s;
+  }
+  .donut-end-dot {
+    fill: white;
+    transition: cx 1.6s cubic-bezier(0.4,0,0.2,1) 0.4s,
+                cy 1.6s cubic-bezier(0.4,0,0.2,1) 0.4s;
+  }
+  .result-score-center {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 1;
+  }
+  .result-score-pct {
+    font-size: 200px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+  }
+  .result-score-label {
+    font-size: 80px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+  }
+
+  /* Stats grid */
+  .result-stats {
+    position: absolute;
+    left: 1606px;
+    top: 740px;
+    width: 1672px;
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+  }
+  .result-stats-row { display: flex; gap: 72px; }
+  .result-stat-card {
+    background: white;
+    border-radius: 64px;
+    width: 800px;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    gap: 54px;
+    padding: 64px;
+    flex-shrink: 0;
+  }
+  .stat-icon-wrap {
+    width: 148px;
+    height: 148px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-icon-wrap svg { width: 100%; height: 100%; }
+  .stat-orange { background: #f97316; }
+  .stat-green  { background: #22c55e; }
+  .stat-red    { background: #ef4444; }
+  .stat-amber  { background: #f59e0b; }
+  .stat-info { display: flex; flex-direction: column; }
+  .stat-num {
+    font-size: 100px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 50px;
+    font-weight: 500;
+    color: #111;
+    line-height: 1.84;
+  }
+
+  /* Result CTAs */
+  .result-cta-area {
+    position: absolute;
+    top: 1869px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn-home {
+    background: white;
+    border: 5.887px solid #dddfe4;
+    border-bottom-width: 17.662px;
+    color: #0a0c11;
+  }
+  .btn-retry {
+    background: #e2008d;
+    border: 5.887px solid #ac005b;
+    border-bottom-width: 17.662px;
+    color: white;
+  }
+  .btn-home:active, .btn-retry:active { transform: translateY(6px); border-bottom-width: 8px; }
+
   /* ══ Explain revealed state ══ */
   .screen.explain-revealed .q-pill {
     opacity: 0;
@@ -713,6 +885,118 @@
     </div>
   </div>
 
+  <!-- ══ Result Screen ══ -->
+  <div class="result-screen" id="resultScreen">
+
+    <!-- Stars -->
+    <div class="star" style="left:1885.23px;top:385.86px;width:8.701px;height:8.701px;opacity:0.69;"></div>
+    <div class="star" style="left:3263.26px;top:370.72px;width:7.711px;height:7.711px;opacity:0.26;"></div>
+    <div class="star" style="left:3676.04px;top:149.94px;width:8.742px;height:8.742px;opacity:0.25;"></div>
+    <div class="star" style="left:450px;top:600px;width:5px;height:5px;opacity:0.3;"></div>
+    <div class="star" style="left:2400px;top:700px;width:6px;height:6px;opacity:0.35;"></div>
+    <div class="star" style="left:3100px;top:1400px;width:3.5px;height:3.5px;opacity:0.28;"></div>
+    <div class="star" style="left:700px;top:1600px;width:7px;height:7px;opacity:0.22;"></div>
+    <div class="star" style="left:3500px;top:300px;width:5.5px;height:5.5px;opacity:0.55;"></div>
+
+    <!-- Title -->
+    <div class="result-title">
+      <p class="result-congrats" id="resultCongratsText">অভিনন্দন!</p>
+      <p class="result-subtitle">কুইজ শেষ হয়েছে</p>
+    </div>
+
+    <!-- Donut chart -->
+    <div class="result-donut-wrap">
+      <svg class="result-donut-svg" viewBox="0 0 880 880">
+        <circle class="donut-track" cx="440" cy="440" r="380"/>
+        <circle class="donut-arc" id="donutArc" cx="440" cy="440" r="380" transform="rotate(-90 440 440)"/>
+        <circle class="donut-end-dot" id="donutEndDot" cx="820" cy="440" r="28"/>
+      </svg>
+      <div class="result-score-center">
+        <span class="result-score-pct" id="resultScorePct">০%</span>
+        <span class="result-score-label">স্কোর</span>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="result-stats">
+      <div class="result-stats-row">
+        <div class="result-stat-card">
+          <div class="stat-icon-wrap stat-orange">
+            <svg viewBox="0 0 100 100"><text x="50" y="74" font-size="72" text-anchor="middle" fill="white" font-weight="bold">?</text></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-num" id="statTotal">—</span>
+            <span class="stat-label">মোট প্রশ্ন</span>
+          </div>
+        </div>
+        <div class="result-stat-card">
+          <div class="stat-icon-wrap stat-green">
+            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,55 40,76 82,28"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-num" id="statCorrect">—</span>
+            <span class="stat-label">সঠিক উত্তর</span>
+          </div>
+        </div>
+      </div>
+      <div class="result-stats-row">
+        <div class="result-stat-card">
+          <div class="stat-icon-wrap stat-red">
+            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="11" stroke-linecap="round"><line x1="24" y1="24" x2="76" y2="76"/><line x1="76" y1="24" x2="24" y2="76"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-num" id="statWrong">—</span>
+            <span class="stat-label">ভুল উত্তর</span>
+          </div>
+        </div>
+        <div class="result-stat-card">
+          <div class="stat-icon-wrap stat-amber">
+            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"><circle cx="50" cy="50" r="36"/><polyline points="50,22 50,52 66,52"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-num" id="statTime">— সে.</span>
+            <span class="stat-label">গড় সময়</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header (same as main) -->
+    <div class="header">
+      <div class="header-left">
+        <div class="close-btn"><div class="close-btn-inner"><div class="close-icon">
+          <svg viewBox="0 0 72 72" fill="none"><circle cx="36" cy="36" r="36" fill="#f4f4f6"/><line x1="22" y1="22" x2="50" y2="50" stroke="#130244" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="22" x2="22" y2="50" stroke="#130244" stroke-width="6" stroke-linecap="round"/></svg>
+        </div></div></div>
+        <div class="title">ক্লাস কুইজ</div>
+      </div>
+      <div class="header-right">
+        <span class="meta-text">বিদ্যুতের উৎস</span><div class="dot"></div>
+        <span class="meta-text">৮টি</span><div class="dot"></div>
+        <span class="meta-text">কঠিন</span>
+      </div>
+    </div>
+
+    <!-- Result CTAs -->
+    <div class="result-cta-area">
+      <div class="btn btn-home" id="btnHome">
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none"><path d="M68 44H20M36 60L20 44l16-16" stroke="#0a0c11" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>হোমপেজে ফিরে যান</span>
+      </div>
+      <div class="btn btn-retry" id="btnRetry">
+        <span>আবার চেষ্টা করুন</span>
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none"><path d="M20 44h48M52 28l16 16-16 16" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-screen confetti canvas -->
+    <canvas id="resultConfetti" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;"></canvas>
+
+  </div>
+
   <!-- Explain card (slides in when ব্যাখ্যা দেখুন is clicked) -->
   <div class="explain-card" id="explainCard">
     <div class="explain-answer-banner">
@@ -832,6 +1116,92 @@
 </div>
 
 <script>
+  /* ── Score tracking ── */
+  var quizScore = { total: 5, correct: 0, wrong: 0, answered: 0 };
+
+  function toBengali(n) {
+    return String(n).replace(/[0-9]/g, function(d){ return '০১২৩৪৫৬৭৮৯'[d]; });
+  }
+
+  /* ── Full-screen confetti ── */
+  function launchFullConfetti() {
+    var canvas = document.getElementById('resultConfetti');
+    canvas.style.opacity = '1';
+    var W = 3840, H = 2160;
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext('2d');
+    var colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#FF8C69','#B8F2E6','#e2008d','#ffffff'];
+    var pieces = [];
+    for (var i = 0; i < 220; i++) {
+      pieces.push({
+        x: Math.random() * W, y: -30 - Math.random() * H * 0.6,
+        w: 20 + Math.random() * 32, h: 10 + Math.random() * 16,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * Math.PI * 2,
+        vx: (Math.random() - 0.5) * 14, vy: 6 + Math.random() * 10,
+        vr: (Math.random() - 0.5) * 0.18, opacity: 1
+      });
+    }
+    var start = null, duration = 4000;
+    function draw(ts) {
+      if (!start) start = ts;
+      var elapsed = ts - start;
+      ctx.clearRect(0, 0, W, H);
+      var alive = false;
+      pieces.forEach(function(p) {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.35; p.rotation += p.vr;
+        p.opacity = Math.max(0, 1 - Math.max(0, elapsed - duration * 0.55) / (duration * 0.45));
+        if (p.y < H + 40) alive = true;
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+      if (alive && elapsed < duration + 500) requestAnimationFrame(draw);
+      else { ctx.clearRect(0, 0, W, H); canvas.style.opacity = '0'; }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  /* ── Show result screen ── */
+  function showResult() {
+    var screen = document.getElementById('screen');
+    screen.classList.add('result-revealed');
+
+    var pct = quizScore.total > 0 ? Math.round((quizScore.correct / quizScore.total) * 100) : 0;
+
+    /* Update text */
+    document.getElementById('resultScorePct').textContent = toBengali(pct) + '%';
+    document.getElementById('statTotal').textContent    = toBengali(quizScore.total) + 'টি';
+    document.getElementById('statCorrect').textContent  = toBengali(quizScore.correct) + 'টি';
+    document.getElementById('statWrong').textContent    = toBengali(quizScore.wrong) + 'টি';
+
+    /* Congratulations vs quiz over */
+    document.getElementById('resultCongratsText').textContent = pct > 50 ? 'অভিনন্দন!' : 'চেষ্টা করো!';
+
+    /* Animate donut arc */
+    var circ = 2 * Math.PI * 380; // ≈ 2388
+    var arcLen = (pct / 100) * circ;
+    var angle = ((pct / 100) * 360 - 90) * Math.PI / 180;
+    var dotX = 440 + 380 * Math.cos(angle);
+    var dotY = 440 + 380 * Math.sin(angle);
+    setTimeout(function() {
+      document.getElementById('donutArc').style.strokeDasharray = arcLen + ' ' + circ;
+      document.getElementById('donutEndDot').setAttribute('cx', dotX);
+      document.getElementById('donutEndDot').setAttribute('cy', dotY);
+    }, 200);
+
+    /* Confetti if score > 50% */
+    if (pct > 50) {
+      setTimeout(launchFullConfetti, 1200);
+    }
+  }
+
   /* Scale to viewport */
   function scaleToFit() {
     var el = document.getElementById('scaleWrapper');
@@ -926,7 +1296,9 @@
     var correctCard = document.querySelector('.option-card[data-correct="true"]');
     var isCorrect = selectedCard.dataset.correct === 'true';
 
+    quizScore.answered++;
     if (isCorrect) {
+      quizScore.correct++;
       /* ── Correct path ── */
       selectedCard.classList.add('correct');
 
@@ -951,6 +1323,7 @@
       }, 1500);
 
     } else {
+      quizScore.wrong++;
       /* ── Wrong path ── */
       selectedCard.classList.remove('selected');
       selectedCard.classList.add('wrong');
@@ -1005,6 +1378,11 @@
 
   /* Reveal answer button */
   document.querySelector('.btn-answer').addEventListener('click', revealAnswer);
+
+  /* পরবর্তি প্রশ্ন → show result (demo: 1 question, so always goes to result) */
+  document.querySelectorAll('.btn-next').forEach(function(btn) {
+    btn.addEventListener('click', showResult);
+  });
 
   /* Show explain card */
   document.querySelector('.btn-explain-show').addEventListener('click', function() {
