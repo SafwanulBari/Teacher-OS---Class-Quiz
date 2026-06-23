@@ -281,6 +281,100 @@
   .options-row:nth-child(2) .option-card:nth-child(1) { transition-delay: 0.39s; }
   .options-row:nth-child(2) .option-card:nth-child(2) { transition-delay: 0.46s; }
 
+  /* ── Explain card ── */
+  .explain-card {
+    position: absolute;
+    top: 292px;
+    left: 220px;
+    width: 3400px;
+    height: 1493px;
+    background: white;
+    border-radius: 148px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(80px);
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1),
+                transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    z-index: 5;
+  }
+
+  .screen.explain-revealed .explain-card {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .explain-answer-banner {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 3200px;
+    background: #e8f6ec;
+    border-radius: 40px;
+    padding: 48px 64px;
+    display: flex;
+    gap: 36px;
+    align-items: baseline;
+  }
+  .explain-correct-label {
+    font-size: 64px;
+    font-weight: 600;
+    color: #222732;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .explain-correct-value {
+    font-size: 64px;
+    font-weight: 600;
+    color: #1ca63e;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
+  .explain-body {
+    position: absolute;
+    top: 330px;
+    left: 100px;
+    width: 3200px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .explain-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .explain-bulb {
+    font-size: 72px;
+    line-height: 1;
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .explain-heading-text {
+    font-size: 66px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.48;
+  }
+  .explain-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .explain-paragraphs p {
+    font-size: 66px;
+    font-weight: 500;
+    color: #111;
+    line-height: 1.48;
+    margin: 0;
+  }
+
   /* ── Bottom CTA area ── */
   .cta-area {
     position: absolute;
@@ -389,6 +483,28 @@
   }
   .btn-explain-show:active { transform: translateY(6px); border-bottom-width: 8px; }
 
+  /* State 4: অপশনগুলো দেখুন + পরবর্তি প্রশ্ন (explain view) */
+  .btn-pair-explain {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1) 0.2s,
+                transform 0.45s cubic-bezier(0.4,0,0.2,1) 0.2s;
+    position: absolute;
+    left: 0; top: 0;
+  }
+  .btn-show-answer-options {
+    background: white;
+    border: 5.887px solid #dddfe4;
+    border-bottom-width: 17.662px;
+    color: #0a0c11;
+  }
+  .btn-show-answer-options:active { transform: translateY(6px); border-bottom-width: 8px; }
+
   /* ══ Revealed state ══ */
   .screen.options-revealed .question-text {
     font-size: 120px;
@@ -428,6 +544,19 @@
   .screen.answer-revealed .options-grid .option-card {
     cursor: default;
     pointer-events: none;
+  }
+
+  /* ══ Explain revealed state ══ */
+  .screen.explain-revealed .btn-pair-revealed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .screen.explain-revealed .btn-pair-explain {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   /* ── Wrong answer state ── */
@@ -561,6 +690,24 @@
     </div>
   </div>
 
+  <!-- Explain card (slides in when ব্যাখ্যা দেখুন is clicked) -->
+  <div class="explain-card" id="explainCard">
+    <div class="explain-answer-banner">
+      <span class="explain-correct-label">সঠিক উত্তর :</span>
+      <span class="explain-correct-value">খ)  +17</span>
+    </div>
+    <div class="explain-body">
+      <div class="explain-heading-row">
+        <span class="explain-bulb">💡</span>
+        <span class="explain-heading-text">ব্যাখ্যা</span>
+      </div>
+      <div class="explain-paragraphs">
+        <p>আমরা বাংলায় ওয়েব ডেডলপমেন্ট নিয়ে কাজ করতে গিয়ে প্রথম যে সমস্যাটার মুখোমুখি হই, সেটা হলো, বাংলা ডেমো টেক্সট। ইংরেজির জন্য lorem ipsum তো আছে । বাংলার জন্য কি আছে? সেই ধারনা থেকেই বাংলা ডেমো টেক্সট তৈরীর চেষ্টা। HTML এর প্রয়োজনীয় প্রায় সব ফরম্যাটেই বাংলা ডেমো টেক্সট তুলে ধরা হয়েছে। আশা করছি, এরি ক্ষুদ্র প্রচেষ্টা আপনাদের কাজে আসবে।</p>
+        <p>আমরা বাংলায় ওয়েব ডেডলপমেন্ট নিয়ে কাজ করতে গিয়ে প্রথম যে সমস্যাটার মুখোমুখি হই, সেটা হলো, বাংলা ডেমো টেক্সট। ইংরেজির জন্য lorem ipsum তো আছে । বাংলার জন্য কি আছে? সেই ধারনা থেকেই বাংলা ডেমো টেক্সট তৈরীর চেষ্টা। HTML এর প্রয়োজনীয় প্রায় সব ফরম্যাটেই বাংলা ডেমো টেক্সট তুলে ধরা হয়েছে। আশা করছি, এরি ক্ষুদ্র প্রচেষ্টা আপনাদের কাজে আসবে।</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Progress pill -->
   <div class="q-pill">
     <div class="q-number">প্রশ্ন ২<span class="muted">/৫</span></div>
@@ -602,6 +749,28 @@
           </svg>
         </div>
         <span>ব্যাখ্যা দেখুন</span>
+      </div>
+      <div class="btn btn-next">
+        <span>পরবর্তি প্রশ্ন</span>
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 44h48M52 28l16 16-16 16" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 4: অপশনগুলো দেখুন + পরবর্তি প্রশ্ন (after explain) -->
+    <div class="btn-pair-explain">
+      <div class="btn btn-show-answer-options" id="btnShowAnswerOptions">
+        <div class="btn-icon">
+          <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="18" width="60" height="10" rx="5" fill="#0a0c11"/>
+            <rect x="14" y="39" width="60" height="10" rx="5" fill="#0a0c11"/>
+            <rect x="14" y="60" width="60" height="10" rx="5" fill="#0a0c11"/>
+          </svg>
+        </div>
+        <span>অপশনগুলো দেখুন</span>
       </div>
       <div class="btn btn-next">
         <span>পরবর্তি প্রশ্ন</span>
@@ -806,6 +975,16 @@
 
   /* Reveal answer button */
   document.querySelector('.btn-answer').addEventListener('click', revealAnswer);
+
+  /* Show explain card */
+  document.querySelector('.btn-explain-show').addEventListener('click', function() {
+    document.getElementById('screen').classList.add('explain-revealed');
+  });
+
+  /* Back to answer view from explain */
+  document.getElementById('btnShowAnswerOptions').addEventListener('click', function() {
+    document.getElementById('screen').classList.remove('explain-revealed');
+  });
 </script>
 </body>
 </html>
