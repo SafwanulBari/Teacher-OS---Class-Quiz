@@ -579,6 +579,107 @@
     pointer-events: auto;
   }
 
+  /* ── Result screen aura blobs ── */
+  .result-aura {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    border-radius: 50%;
+    will-change: transform, opacity;
+  }
+  .result-aura-top {
+    width: 3840px; height: 138px;
+    left: 0; top: 22px;
+    background: #00cc4c;
+    filter: blur(277px);
+  }
+  .result-aura-left {
+    width: 109px; height: 2160px;
+    left: 108px; top: 0;
+    background: #f3c12e;
+    filter: blur(333px);
+  }
+  .result-aura-right {
+    width: 109px; height: 2160px;
+    right: 108px; top: 0;
+    background: #ea3565;
+    filter: blur(333px);
+  }
+  .result-aura-bottom {
+    width: 3840px; height: 155px;
+    left: 0; bottom: 20px;
+    background: #ea3948;
+    filter: blur(333px);
+  }
+
+  @keyframes auraTopIn {
+    0%   { transform: translateY(-1400px) translateX(900px); opacity: 0; }
+    8%   { opacity: 1; }
+    18%  { transform: translateY(280px) translateX(-500px); opacity: 1; }
+    32%  { transform: translateY(-160px) translateX(260px); opacity: 1; }
+    46%  { transform: translateY(90px) translateX(-130px); opacity: 1; }
+    60%  { transform: translateY(-45px) translateX(65px); opacity: 1; }
+    73%  { transform: translateY(18px) translateX(-24px); opacity: 0.95; }
+    83%  { transform: translateY(-5px) translateX(8px); opacity: 0.7; }
+    92%  { transform: translateY(0) translateX(0); opacity: 0.35; }
+    100% { transform: translateY(0) translateX(0); opacity: 0; }
+  }
+  @keyframes auraLeftIn {
+    0%   { transform: translateX(-1400px) translateY(700px); opacity: 0; }
+    8%   { opacity: 1; }
+    18%  { transform: translateX(300px) translateY(-380px); opacity: 1; }
+    32%  { transform: translateX(-160px) translateY(200px); opacity: 1; }
+    46%  { transform: translateX(85px) translateY(-100px); opacity: 1; }
+    60%  { transform: translateX(-40px) translateY(50px); opacity: 1; }
+    73%  { transform: translateX(16px) translateY(-18px); opacity: 0.95; }
+    83%  { transform: translateX(-4px) translateY(5px); opacity: 0.7; }
+    92%  { transform: translateX(0) translateY(0); opacity: 0.35; }
+    100% { transform: translateX(0) translateY(0); opacity: 0; }
+  }
+  @keyframes auraRightIn {
+    0%   { transform: translateX(1400px) translateY(-700px); opacity: 0; }
+    8%   { opacity: 1; }
+    18%  { transform: translateX(-300px) translateY(380px); opacity: 1; }
+    32%  { transform: translateX(160px) translateY(-200px); opacity: 1; }
+    46%  { transform: translateX(-85px) translateY(100px); opacity: 1; }
+    60%  { transform: translateX(40px) translateY(-50px); opacity: 1; }
+    73%  { transform: translateX(-16px) translateY(18px); opacity: 0.95; }
+    83%  { transform: translateX(4px) translateY(-5px); opacity: 0.7; }
+    92%  { transform: translateX(0) translateY(0); opacity: 0.35; }
+    100% { transform: translateX(0) translateY(0); opacity: 0; }
+  }
+  @keyframes auraBottomIn {
+    0%   { transform: translateY(1400px) translateX(-900px); opacity: 0; }
+    8%   { opacity: 1; }
+    18%  { transform: translateY(-280px) translateX(500px); opacity: 1; }
+    32%  { transform: translateY(160px) translateX(-260px); opacity: 1; }
+    46%  { transform: translateY(-90px) translateX(130px); opacity: 1; }
+    60%  { transform: translateY(45px) translateX(-65px); opacity: 1; }
+    73%  { transform: translateY(-18px) translateX(24px); opacity: 0.95; }
+    83%  { transform: translateY(5px) translateX(-8px); opacity: 0.7; }
+    92%  { transform: translateY(0) translateX(0); opacity: 0.35; }
+    100% { transform: translateY(0) translateX(0); opacity: 0; }
+  }
+
+  /* Flash burst at blast moment */
+  .result-flash {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0; pointer-events: none; z-index: 60;
+  }
+  @keyframes flashBurst {
+    0%   { opacity: 0; transform: scale(0.1); }
+    18%  { opacity: 0.95; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.4); }
+  }
+  .result-flash.flash-play { animation: flashBurst 0.8s cubic-bezier(0.2,0,0.4,1) forwards; }
+
+  .result-aura-top.aura-play    { animation: auraTopIn    3s ease-in-out forwards; }
+  .result-aura-left.aura-play   { animation: auraLeftIn   3s ease-in-out 0.05s forwards; }
+  .result-aura-right.aura-play  { animation: auraRightIn  3s ease-in-out 0.1s forwards; }
+  .result-aura-bottom.aura-play { animation: auraBottomIn 3s ease-in-out 0.15s forwards; }
+
   .result-title {
     position: absolute;
     top: 194px;
@@ -685,18 +786,13 @@
   .stat-icon-wrap {
     width: 148px;
     height: 148px;
-    border-radius: 50%;
     flex-shrink: 0;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
   }
-  .stat-icon-wrap svg { width: 100%; height: 100%; }
-  .stat-orange { background: #f97316; }
-  .stat-green  { background: #22c55e; }
-  .stat-red    { background: #ef4444; }
-  .stat-amber  { background: #f59e0b; }
+  .stat-icon-wrap img.stat-full { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stat-icon-layer { position: absolute; }
+  .stat-icon-layer img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .stat-info { display: flex; flex-direction: column; }
   .stat-num {
     font-size: 100px;
@@ -888,6 +984,14 @@
   <!-- ══ Result Screen ══ -->
   <div class="result-screen" id="resultScreen">
 
+    <!-- Aura blobs -->
+    <div class="result-aura result-aura-top"    id="auraTop"></div>
+    <div class="result-aura result-aura-left"   id="auraLeft"></div>
+    <div class="result-aura result-aura-right"  id="auraRight"></div>
+    <div class="result-aura result-aura-bottom" id="auraBottom"></div>
+    <!-- Center flash -->
+    <div class="result-flash" id="resultFlash"></div>
+
     <!-- Stars -->
     <div class="star" style="left:1885.23px;top:385.86px;width:8.701px;height:8.701px;opacity:0.69;"></div>
     <div class="star" style="left:3263.26px;top:370.72px;width:7.711px;height:7.711px;opacity:0.26;"></div>
@@ -921,8 +1025,8 @@
     <div class="result-stats">
       <div class="result-stats-row">
         <div class="result-stat-card">
-          <div class="stat-icon-wrap stat-orange">
-            <svg viewBox="0 0 100 100"><text x="50" y="74" font-size="72" text-anchor="middle" fill="white" font-weight="bold">?</text></svg>
+          <div class="stat-icon-wrap">
+            <img class="stat-full" src="https://www.figma.com/api/mcp/asset/d37fc3eb-6420-4e1a-8ef3-bc62b869fe8b" alt="" />
           </div>
           <div class="stat-info">
             <span class="stat-num" id="statTotal">—</span>
@@ -930,8 +1034,8 @@
           </div>
         </div>
         <div class="result-stat-card">
-          <div class="stat-icon-wrap stat-green">
-            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,55 40,76 82,28"/></svg>
+          <div class="stat-icon-wrap">
+            <img class="stat-full" src="https://www.figma.com/api/mcp/asset/5399b005-27ab-4fd2-bfe3-e6fa3800376d" alt="" />
           </div>
           <div class="stat-info">
             <span class="stat-num" id="statCorrect">—</span>
@@ -941,8 +1045,10 @@
       </div>
       <div class="result-stats-row">
         <div class="result-stat-card">
-          <div class="stat-icon-wrap stat-red">
-            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="11" stroke-linecap="round"><line x1="24" y1="24" x2="76" y2="76"/><line x1="76" y1="24" x2="24" y2="76"/></svg>
+          <div class="stat-icon-wrap">
+            <div class="stat-icon-layer" style="inset:3.13%;">
+              <img src="https://www.figma.com/api/mcp/asset/5983809f-fa3e-4d33-bdbe-3ed6a6264b52" alt="" />
+            </div>
           </div>
           <div class="stat-info">
             <span class="stat-num" id="statWrong">—</span>
@@ -950,8 +1056,22 @@
           </div>
         </div>
         <div class="result-stat-card">
-          <div class="stat-icon-wrap stat-amber">
-            <svg viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"><circle cx="50" cy="50" r="36"/><polyline points="50,22 50,52 66,52"/></svg>
+          <div class="stat-icon-wrap">
+            <img class="stat-full" src="https://www.figma.com/api/mcp/asset/7c8a3dc8-deb1-4d32-8c9c-e51c31bac5c7" alt="" />
+            <div class="stat-icon-layer" style="inset:0 0 0 47.34%;"><img src="https://www.figma.com/api/mcp/asset/14a6ef39-69ab-4b33-992c-1336be8748b1" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:11.04%;"><img src="https://www.figma.com/api/mcp/asset/1ab75afc-8457-4ecc-a808-8b497f4bb6a5" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:11.04% 11.04% 11.04% 46.8%;"><img src="https://www.figma.com/api/mcp/asset/107a6e59-b883-4de8-a95d-46678ab9f7fb" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:17.8% 48.49% 76.97% 48.49%;"><img src="https://www.figma.com/api/mcp/asset/d6aa9e91-e5ca-4e03-aeac-4c0b2eeacdae" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:26.82% 26.87% 68.59% 68.54%;"><img src="https://www.figma.com/api/mcp/asset/7c858c48-dcd0-4468-ac2b-57a40f349857" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:48.5% 17.96% 48.49% 76.81%;"><img src="https://www.figma.com/api/mcp/asset/889c44c4-b692-4b4e-b7bb-d0d3986c2951" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:68.55% 26.99% 26.87% 68.43%;"><img src="https://www.figma.com/api/mcp/asset/800b359f-bb18-482d-8a22-76da712c7a58" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:76.81% 48.66% 17.96% 48.33%;"><img src="https://www.figma.com/api/mcp/asset/4c28ee77-5823-4120-9956-c3a92029d1ed" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:68.43% 68.71% 26.98% 26.71%;"><img src="https://www.figma.com/api/mcp/asset/c44cfb57-f4b0-4d0b-8024-b49946aa2782" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:48.33% 76.97% 48.66% 17.79%;"><img src="https://www.figma.com/api/mcp/asset/640ecad6-606e-4f4a-8e18-6bf815fb3a85" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:26.71% 68.59% 68.71% 26.82%;"><img src="https://www.figma.com/api/mcp/asset/1d8066bf-ef25-4d07-b272-34613a8da206" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:27.78% 48.49% 48.49% 35.67%;"><img src="https://www.figma.com/api/mcp/asset/0bd69059-367d-457b-a5bc-e119606b0b94" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:48.49% 33.01% 40.53% 48.49%;"><img src="https://www.figma.com/api/mcp/asset/d490e361-9ebb-4de0-8c68-e423673f78f1" alt="" /></div>
+            <div class="stat-icon-layer" style="inset:45.97%;"><img src="https://www.figma.com/api/mcp/asset/15b23d66-893e-440a-88e8-c9d37c45282b" alt="" /></div>
           </div>
           <div class="stat-info">
             <span class="stat-num" id="statTime">— সে.</span>
@@ -1116,62 +1236,130 @@
 </div>
 
 <script>
+  /* ── Question data ── */
+  var questions = [
+    {
+      q: "যদি x − 7 = 10 হয়, তবে x এর মান কত?",
+      options: ["+7", "+17", "−17", "−7"],
+      correct: 1,
+      explain: "সমীকরণে −7 কে ডানপাশে নিলে চিহ্ন পরিবর্তন হয়ে +7 হয়। তাই x = 10 + 7 = 17।"
+    },
+    {
+      q: "বিদ্যুৎ প্রবাহের একক কী?",
+      options: ["ওহম", "ভোল্ট", "অ্যাম্পিয়ার", "ওয়াট"],
+      correct: 2,
+      explain: "বিদ্যুৎ প্রবাহ বা কারেন্টের একক হলো অ্যাম্পিয়ার (A)। এটি প্রতি সেকেন্ডে কুলম্ব চার্জ প্রবাহকে নির্দেশ করে।"
+    },
+    {
+      q: "কোনটি বিদ্যুৎ পরিবাহী পদার্থ?",
+      options: ["রাবার", "কাচ", "তামা", "কাঠ"],
+      correct: 2,
+      explain: "তামা (Cu) একটি চমৎকার বিদ্যুৎ পরিবাহী। এতে প্রচুর মুক্ত ইলেকট্রন থাকায় এটি সহজে বিদ্যুৎ পরিবহন করতে পারে।"
+    },
+    {
+      q: "বৈদ্যুতিক বাল্বের ফিলামেন্ট কী দিয়ে তৈরি?",
+      options: ["তামা", "টাংস্টেন", "অ্যালুমিনিয়াম", "লোহা"],
+      correct: 1,
+      explain: "বৈদ্যুতিক বাল্বের ফিলামেন্ট টাংস্টেন (W) দিয়ে তৈরি। এর গলনাঙ্ক ৩৪২২°C, তাই উচ্চ তাপেও গলে যায় না।"
+    },
+    {
+      q: "ওহমের সূত্র অনুযায়ী, ভোল্টেজ V = ?",
+      options: ["I + R", "I × R", "I ÷ R", "I − R"],
+      correct: 1,
+      explain: "ওহমের সূত্রমতে, V = I × R। এখানে V = ভোল্টেজ, I = কারেন্ট (অ্যাম্পিয়ার), R = রোধ (ওহম)।"
+    }
+  ];
+
+  var currentQ = 0;
+
   /* ── Score tracking ── */
-  var quizScore = { total: 5, correct: 0, wrong: 0, answered: 0 };
+  var quizScore = { total: questions.length, correct: 0, wrong: 0, answered: 0 };
 
   function toBengali(n) {
     return String(n).replace(/[0-9]/g, function(d){ return '০১২৩৪৫৬৭৮৯'[d]; });
   }
 
-  /* ── Full-screen confetti ── */
+  /* ── Center-blast confetti (small → big explosion from middle) ── */
   function launchFullConfetti() {
     var canvas = document.getElementById('resultConfetti');
     canvas.style.opacity = '1';
     var W = 3840, H = 2160;
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
-    var colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#FF8C69','#B8F2E6','#e2008d','#ffffff'];
+    var cx = W / 2, cy = H / 2;
+    var colors = ['#FF6B00','#FF3333','#00C8B4','#3399FF','#FFD700','#CC44FF','#22CC66','#FF44AA','#FF9900','#ffffff','#e2008d','#44DDFF','#FFEAA7'];
     var pieces = [];
-    for (var i = 0; i < 220; i++) {
+    for (var i = 0; i < 300; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var speed = 25 + Math.random() * 65;
+      var isCircle = Math.random() < 0.28;
       pieces.push({
-        x: Math.random() * W, y: -30 - Math.random() * H * 0.6,
-        w: 20 + Math.random() * 32, h: 10 + Math.random() * 16,
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        w: isCircle ? (18 + Math.random() * 28) : (36 + Math.random() * 72),
+        h: isCircle ? (18 + Math.random() * 28) : (14 + Math.random() * 28),
+        circle: isCircle,
         color: colors[Math.floor(Math.random() * colors.length)],
         rotation: Math.random() * Math.PI * 2,
-        vx: (Math.random() - 0.5) * 14, vy: 6 + Math.random() * 10,
-        vr: (Math.random() - 0.5) * 0.18, opacity: 1
+        vr: (Math.random() - 0.5) * 0.22,
+        gravity: 0.5 + Math.random() * 0.5,
+        drag: 0.988,
+        opacity: 1
       });
     }
-    var start = null, duration = 4000;
+    var start = null, duration = 3800;
     function draw(ts) {
       if (!start) start = ts;
       var elapsed = ts - start;
       ctx.clearRect(0, 0, W, H);
-      var alive = false;
+      var alive = elapsed < duration;
+      var fadeStart = duration * 0.55;
       pieces.forEach(function(p) {
-        p.x += p.vx; p.y += p.vy; p.vy += 0.35; p.rotation += p.vr;
-        p.opacity = Math.max(0, 1 - Math.max(0, elapsed - duration * 0.55) / (duration * 0.45));
-        if (p.y < H + 40) alive = true;
+        p.x += p.vx; p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= p.drag; p.vy *= p.drag;
+        p.rotation += p.vr;
+        p.opacity = elapsed < fadeStart ? 1 : Math.max(0, 1 - (elapsed - fadeStart) / (duration - fadeStart));
         ctx.save();
         ctx.globalAlpha = p.opacity;
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
         ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+        if (p.circle) {
+          ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+        } else {
+          ctx.rect(-p.w / 2, -p.h / 2, p.w, p.h);
+        }
         ctx.fill();
         ctx.restore();
       });
-      if (alive && elapsed < duration + 500) requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
       else { ctx.clearRect(0, 0, W, H); canvas.style.opacity = '0'; }
     }
     requestAnimationFrame(draw);
   }
 
   /* ── Show result screen ── */
+  function playAuraAnimation() {
+    var auras = document.querySelectorAll('.result-aura');
+    auras.forEach(function(a) {
+      a.classList.remove('aura-play');
+      a.style.animation = 'none';
+    });
+    /* Force reflow so removing + re-adding triggers a fresh animation */
+    document.getElementById('resultScreen').offsetHeight;
+    auras.forEach(function(a) {
+      a.style.animation = '';
+      a.classList.add('aura-play');
+    });
+  }
+
   function showResult() {
     var screen = document.getElementById('screen');
     screen.classList.add('result-revealed');
+    playAuraAnimation();
 
     var pct = quizScore.total > 0 ? Math.round((quizScore.correct / quizScore.total) * 100) : 0;
 
@@ -1196,17 +1384,106 @@
       document.getElementById('donutEndDot').setAttribute('cy', dotY);
     }, 200);
 
-    /* Confetti if score > 50% */
-    if (pct > 50) {
-      setTimeout(launchFullConfetti, 1200);
+    /* Center-blast confetti + flash for all scores */
+    var flash = document.getElementById('resultFlash');
+    flash.classList.remove('flash-play');
+    flash.offsetHeight; /* reflow */
+    flash.classList.add('flash-play');
+    setTimeout(launchFullConfetti, 80);
+  }
+
+  /* ── Load a question by index ── */
+  function loadQuestion(idx) {
+    var q = questions[idx];
+    var screen = document.getElementById('screen');
+
+    // Reset all screen states
+    screen.classList.remove('options-revealed', 'answer-revealed', 'explain-revealed');
+
+    // Reset every option card
+    document.querySelectorAll('.option-card').forEach(function(card, i) {
+      card.classList.remove('selected','correct','correct-reveal','wrong','shake','confetti-active');
+      card.dataset.correct = (i === q.correct) ? 'true' : 'false';
+      card.querySelector('.option-label').textContent = q.options[i];
+
+      var fill = card.querySelector('.correct-fill');
+      fill.style.transition = 'none';
+      fill.style.width = '0';
+
+      var cv = card.querySelector('.confetti-canvas');
+      cv.getContext('2d').clearRect(0, 0, cv.width, cv.height);
+      cv.style.opacity = '';
+
+      setTimeout(function(){ fill.style.transition = ''; fill.style.width = ''; }, 80);
+    });
+
+    // Update question text
+    document.querySelector('.question-text').textContent = q.q;
+
+    // Update explain panel
+    var badge = ['ক','খ','গ','ঘ'][q.correct];
+    document.querySelector('.explain-correct-value').textContent = badge + ')  ' + q.options[q.correct];
+    var paras = document.querySelectorAll('.explain-paragraphs p');
+    paras[0].textContent = q.explain;
+    if (paras[1]) paras[1].textContent = '';
+
+    // Update progress pill
+    updateProgress(idx);
+
+    // Relabel "পরবর্তি প্রশ্ন" → "ফলাফল দেখুন" on last question
+    var isLast = (idx === questions.length - 1);
+    document.querySelectorAll('.btn-next').forEach(function(btn) {
+      btn.querySelector('span').textContent = isLast ? 'ফলাফল দেখুন' : 'পরবর্তি প্রশ্ন';
+    });
+  }
+
+  /* ── Update progress pill ── */
+  function updateProgress(idx) {
+    var total = questions.length;
+    document.querySelector('.q-number').innerHTML =
+      'প্রশ্ন ' + toBengali(idx + 1) + '<span class="muted">/' + toBengali(total) + '</span>';
+    document.querySelectorAll('.progress-seg').forEach(function(seg, i) {
+      seg.className = 'progress-seg ' + (i < idx ? 'done' : i === idx ? 'current' : 'empty');
+    });
+  }
+
+  /* ── Next question or show result ── */
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ >= questions.length) {
+      showResult();
+    } else {
+      loadQuestion(currentQ);
     }
+  }
+
+  /* ── Reset and restart quiz ── */
+  function resetQuiz() {
+    currentQ = 0;
+    quizScore.correct = 0; quizScore.wrong = 0; quizScore.answered = 0;
+    document.getElementById('screen').classList.remove('result-revealed');
+    // Reset donut to zero
+    document.getElementById('donutArc').style.strokeDasharray = '0 2388';
+    document.getElementById('donutEndDot').setAttribute('cx', '440');
+    document.getElementById('donutEndDot').setAttribute('cy', '60'); // top of circle
+    document.getElementById('resultConfetti').style.opacity = '0';
+    var flash = document.getElementById('resultFlash');
+    flash.classList.remove('flash-play');
+    flash.style.animation = 'none';
+    document.querySelectorAll('.result-aura').forEach(function(a) {
+      a.classList.remove('aura-play');
+      a.style.animation = 'none';
+    });
+    loadQuestion(0);
   }
 
   /* Scale to viewport */
   function scaleToFit() {
     var el = document.getElementById('scaleWrapper');
     var scale = Math.min(window.innerWidth / 3840, window.innerHeight / 2160);
-    el.style.transform = 'scale(' + scale + ')';
+    var offsetX = (window.innerWidth - 3840 * scale) / 2;
+    var offsetY = (window.innerHeight - 2160 * scale) / 2;
+    el.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + scale + ')';
   }
   scaleToFit();
   window.addEventListener('resize', scaleToFit);
@@ -1221,47 +1498,59 @@
     var W = canvas.offsetWidth, H = canvas.offsetHeight;
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d');
-    var colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#FF8C69','#B8F2E6'];
+    /* Bright saturated colours matching Figma design */
+    var colors = ['#FF6B00','#FF3333','#00C8B4','#3399FF','#FFD700','#CC44FF','#22CC66','#FF44AA','#FF9900','#44DDFF'];
     var pieces = [];
-    for (var i = 0; i < 80; i++) {
+    for (var i = 0; i < 90; i++) {
+      var shape = Math.random();          /* 0-0.5 rect, 0.5-0.75 circle, 0.75-1 ribbon */
+      var isCircle = shape > 0.5 && shape <= 0.75;
+      var isRibbon = shape > 0.75;
       pieces.push({
         x: Math.random() * W,
-        y: -20 - Math.random() * H * 0.5,
-        w: 12 + Math.random() * 20,
-        h: 6 + Math.random() * 10,
+        y: H * (0.1 + Math.random() * 0.8),
+        w: isCircle ? (24 + Math.random() * 30) : isRibbon ? (10 + Math.random() * 14) : (56 + Math.random() * 80),
+        h: isCircle ? (24 + Math.random() * 30) : isRibbon ? (60 + Math.random() * 80) : (20 + Math.random() * 28),
+        circle: isCircle,
+        ribbon: isRibbon,
         color: colors[Math.floor(Math.random() * colors.length)],
         rotation: Math.random() * Math.PI * 2,
-        vx: (Math.random() - 0.5) * 8,
-        vy: 4 + Math.random() * 6,
-        vr: (Math.random() - 0.5) * 0.2,
-        opacity: 1
+        vx: (Math.random() - 0.5) * 6,
+        vy: -(2 + Math.random() * 5),
+        vr: (Math.random() - 0.5) * 0.08,
+        delay: Math.random() * 400              /* stagger start time ms */
       });
     }
     var start = null;
-    var duration = 2200;
+    var duration = 2800;
     function draw(ts) {
       if (!start) start = ts;
       var elapsed = ts - start;
       ctx.clearRect(0, 0, W, H);
-      var alive = false;
+      var alive = elapsed < duration;
       pieces.forEach(function(p) {
+        if (elapsed < p.delay) return;
+        var t = elapsed - p.delay;
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.3;
+        p.vy += 0.12;
         p.rotation += p.vr;
-        p.opacity = Math.max(0, 1 - Math.max(0, elapsed - duration * 0.6) / (duration * 0.4));
-        if (p.y < H + 30) alive = true;
+        var fadeStart = duration * 0.65;
+        var opacity = t < fadeStart ? 1 : Math.max(0, 1 - (t - fadeStart) / (duration - fadeStart));
         ctx.save();
-        ctx.globalAlpha = p.opacity;
+        ctx.globalAlpha = opacity;
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
         ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+        if (p.circle) {
+          ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+        } else {
+          ctx.rect(-p.w / 2, -p.h / 2, p.w, p.h);
+        }
         ctx.fill();
         ctx.restore();
       });
-      if (alive && elapsed < duration + 500) requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
       else ctx.clearRect(0, 0, W, H);
     }
     requestAnimationFrame(draw);
@@ -1320,7 +1609,7 @@
       setTimeout(function() {
         selectedCard.classList.add('confetti-active');
         launchConfetti(selectedCard.querySelector('.confetti-canvas'));
-      }, 1500);
+      }, 1400);
 
     } else {
       quizScore.wrong++;
@@ -1379,10 +1668,13 @@
   /* Reveal answer button */
   document.querySelector('.btn-answer').addEventListener('click', revealAnswer);
 
-  /* পরবর্তি প্রশ্ন → show result (demo: 1 question, so always goes to result) */
+  /* পরবর্তি প্রশ্ন / ফলাফল দেখুন */
   document.querySelectorAll('.btn-next').forEach(function(btn) {
-    btn.addEventListener('click', showResult);
+    btn.addEventListener('click', nextQuestion);
   });
+
+  /* আবার চেষ্টা করুন */
+  document.getElementById('btnRetry').addEventListener('click', resetQuiz);
 
   /* Show explain card */
   document.querySelector('.btn-explain-show').addEventListener('click', function() {
@@ -1393,6 +1685,9 @@
   document.getElementById('btnShowAnswerOptions').addEventListener('click', function() {
     document.getElementById('screen').classList.remove('explain-revealed');
   });
+
+  /* Initialize first question */
+  loadQuestion(0);
 </script>
 </body>
 </html>
