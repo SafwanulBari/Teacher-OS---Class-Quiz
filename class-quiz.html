@@ -281,6 +281,24 @@
   .options-row:nth-child(2) .option-card:nth-child(1) { transition-delay: 0.39s; }
   .options-row:nth-child(2) .option-card:nth-child(2) { transition-delay: 0.46s; }
 
+  /* Decorative bulb — positioned in screen coords, not clipped by explain-card */
+  .explain-deco {
+    position: absolute;
+    /* card left(220) + icon x(3056) = 3276; card top(292) + banner top(100) - half icon = 262 */
+    left: 3276px;
+    top: 262px;
+    width: 284px;
+    height: 298px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 6;
+    transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .screen.explain-revealed .explain-deco {
+    opacity: 1;
+  }
+
   /* ── Explain card ── */
   .explain-card {
     position: absolute;
@@ -697,13 +715,6 @@
 
   <!-- Explain card (slides in when ব্যাখ্যা দেখুন is clicked) -->
   <div class="explain-card" id="explainCard">
-    <!-- Decorative top-right element -->
-    <div style="position:absolute;top:50px;left:3056px;width:284px;height:298px;overflow:hidden;pointer-events:none;">
-      <img src="https://www.figma.com/api/mcp/asset/60b3960f-da01-4be1-8c49-75ea71fe87e7"
-           alt=""
-           style="position:absolute;width:158.51%;height:151.26%;left:-31.73%;top:-9.6%;max-width:none;" />
-    </div>
-
     <div class="explain-answer-banner">
       <span class="explain-correct-label">সঠিক উত্তর :</span>
       <span class="explain-correct-value">খ)  +17</span>
@@ -718,6 +729,13 @@
         <p>আমরা বাংলায় ওয়েব ডেডলপমেন্ট নিয়ে কাজ করতে গিয়ে প্রথম যে সমস্যাটার মুখোমুখি হই, সেটা হলো, বাংলা ডেমো টেক্সট। ইংরেজির জন্য lorem ipsum তো আছে । বাংলার জন্য কি আছে? সেই ধারনা থেকেই বাংলা ডেমো টেক্সট তৈরীর চেষ্টা। HTML এর প্রয়োজনীয় প্রায় সব ফরম্যাটেই বাংলা ডেমো টেক্সট তুলে ধরা হয়েছে। আশা করছি, এরি ক্ষুদ্র প্রচেষ্টা আপনাদের কাজে আসবে।</p>
       </div>
     </div>
+  </div>
+
+  <!-- Decorative bulb icon — outside explain-card so overflow:hidden doesn't clip it -->
+  <div class="explain-deco" id="explainDeco">
+    <img src="https://www.figma.com/api/mcp/asset/60b3960f-da01-4be1-8c49-75ea71fe87e7"
+         alt=""
+         style="position:absolute;width:158.51%;height:151.26%;left:-31.73%;top:-9.6%;max-width:none;" />
   </div>
 
   <!-- Progress pill -->
